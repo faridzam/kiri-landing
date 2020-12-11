@@ -4,21 +4,23 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import { NavbarComponent } from './components'
-import { Home, Sukses } from './pages'
+import {Navigation} from './components'
+import {Home, Success} from './pages'
 
-export default class App extends Component {
-  render() {
-    return (
+class App extends React.Component{
+  render(){
+    return(
       <BrowserRouter>
-          <NavbarComponent />
-          <main>
-            <Switch>
-              <Route  path="/" component={Home} exact/>
-              <Route  path="/sukses" component={Sukses} exact/>
-            </Switch>
-          </main>
+        <Navigation />
+        <main>
+          <Switch>
+            <Route path="/" component={Home}/>
+            <Route path="/success" component={Success} exact/>
+          </Switch>
+        </main>
       </BrowserRouter>
-    )
+    );
   }
 }
+
+export default App;

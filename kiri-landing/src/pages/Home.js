@@ -1,37 +1,36 @@
-import React, { Component } from "react";
-import { Row, Col, Container } from "react-bootstrap";
-import { Hasil, ListCategories, Menus } from "../components";
-import { API_URL } from "../utils/constants";
-import axios from "axios";
-import swal from "sweetalert";
+import React from 'react';
+import {Categories, Products, Carts} from '../components';
+import {Container, Row, Col} from 'react-bootstrap';
+import axios from 'axios';
+import { API_URL } from '../utils/constants';
+import swal from 'sweetalert';
 
-export default class Home extends Component {
-  constructor(props) {
+class Home extends React.Component{
+  constructor(props){
     super(props);
-
     this.state = {
-      menus: [],
-      categoriYangDipilih: "coffee",
-      keranjangs: [],
+      products: [],
+      choosenCategory: "coffee",
+      carts:[],
     };
   }
 
-  componentDidMount() {
+  componentDidMount(){
     axios
-      .get(API_URL + "products?category.category_name=" + this.state.categoriYangDipilih)
+      .get(API_URL + "products/" + this.state.choosenCategory)
       .then((res) => {
-        const menus = res.data;
-        this.setState({ menus });
+        const products = res.data;
+        this.setState({products});
       })
       .catch((error) => {
-        console.log("Error yaa ", error);
+        console.log("error products", error);
       });
 
-    axios
+      axios
       .get(API_URL + "carts")
       .then((res) => {
-        const keranjangs = res.data;
-        this.setState({ keranjangs });
+        const carts = res.data;
+        this.setState({ carts });
       })
       .catch((error) => {
         console.log("Error yaa ", error);
@@ -39,12 +38,12 @@ export default class Home extends Component {
   }
 
   componentDidUpdate(prevState) {
-    if(this.state.keranjangs !== prevState.keranjangs) {
+    if(this.state.carts !== prevState.carts) {
       axios
       .get(API_URL + "carts")
       .then((res) => {
-        const keranjangs = res.data;
-        this.setState({ keranjangs });
+        const carts = res.data;
+        this.setState({ carts });
       })
       .catch((error) => {
         console.log("Error yaa ", error);
@@ -54,38 +53,41 @@ export default class Home extends Component {
 
   changeCategory = (value) => {
     this.setState({
-      categoriYangDipilih: value,
-      menus: [],
+      choosenCategory : value,
+      products: [],
     });
 
     axios
-      .get(API_URL + "products?category.category_name=" + value)
-      .then((res) => {
-        const menus = res.data;
-        this.setState({ menus });
+      .get(API_URL + "products/" + value)
+      .then((res) =>{
+        const products = res.data;
+        this.setState({products});
       })
       .catch((error) => {
-        console.log("Error yaa ", error);
+        console.log("error menus", error);
       });
   };
 
-  masukKeranjang = (value) => {
+  addToCart = (value) => {
     axios
-      .get(API_URL + "carts?product.id=" + value.id)
+      .get(API_URL + "carts?product_id=" + value.product_id)
       .then((res) => {
         if (res.data.length === 0) {
-          const keranjang = {
-            jumlah: 1,
-            total_harga: value.harga,
+          const cart = {
+            cart_quantity: 1,
+            cart_price: value.product_price,
             product: value,
+            product_id: value.product_id,
+            product_name: value.product_name,
+            product_price: value.product_price
           };
 
           axios
-            .post(API_URL + "carts", keranjang)
+            .post(API_URL + "carts", cart)
             .then((res) => {
               swal({
                 title: "Sukses Masuk Keranjang",
-                text: "Sukses Masuk Keranjang " + keranjang.product.nama,
+                text: "Sukses Masuk Keranjang " + cart.product_name,
                 icon: "success",
                 button: false,
                 timer: 1500,
@@ -95,18 +97,22 @@ export default class Home extends Component {
               console.log("Error yaa ", error);
             });
         } else {
-          const keranjang = {
-            jumlah: res.data[0].jumlah + 1,
-            total_harga: res.data[0].total_harga + value.harga,
+
+          const cart = {
+            cart_quantity: res.data[0].cart_quantity + 1,
+            cart_price: res.data[0].cart_price + value.product_price,
             product: value,
+            product_id: value.product_id,
+            product_name: value.product_name,
+            product_price: value.product_price
           };
 
           axios
-            .put(API_URL + "carts/" + res.data[0].id, keranjang)
+            .put(API_URL + "carts/" + res.data[0].cart_id, cart)
             .then((res) => {
               swal({
                 title: "Sukses Masuk Keranjang",
-                text: "Sukses Masuk Keranjang " + keranjang.product.nama,
+                text: "Sukses Masuk Keranjang " + cart.product_name,
                 icon: "success",
                 button: false,
                 timer: 1500,
@@ -122,36 +128,37 @@ export default class Home extends Component {
       });
   };
 
-  render() {
-    const { menus, categoriYangDipilih, keranjangs } = this.state;
-    return (
-        <div className="mt-3">
-          <Container fluid>
-            <Row>
-              <ListCategories
-                changeCategory={this.changeCategory}
-                categoriYangDipilih={categoriYangDipilih}
-              />
-              <Col className="mt-3">
-                <h4>
-                  <strong>Daftar Produk</strong>
-                </h4>
-                <hr />
-                <Row className="overflow-auto menu">
-                  {menus &&
-                    menus.map((menu) => (
-                      <Menus
-                        key={menu.product_id}
-                        menu={menu}
-                        masukKeranjang={this.masukKeranjang}
-                      />
-                    ))}
-                </Row>
-              </Col>
-              <Hasil keranjangs={keranjangs} {...this.props}/>
-            </Row>
-          </Container>
-        </div>
-    );
+  render(){
+    const{products, choosenCategory, carts} = this.state;
+    return(
+      <div className="mt-3">
+        <Container fluid>
+          <Row>
+            <Categories
+              changeCategory={this.changeCategory}
+              choosenCategory={choosenCategory}
+            />
+            <Col className="mt-3">
+              <h4>
+                <strong>Products :</strong>
+              </h4>
+              <hr />
+              <Row className="overflow-auto product">
+                {products && products.map((product) => (
+                  <Products
+                    key={product.product_id}
+                    product={product}
+                    addToCart={this.addToCart}
+                    />
+                ))}
+              </Row>
+            </Col>
+            <Carts carts={carts} {...this.props}/>
+          </Row>
+        </Container>
+      </div>
+    )
   }
 }
+
+export default Home;

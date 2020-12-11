@@ -1,38 +1,16 @@
-body {
-  margin: 0;
-  font-family: 'Public Sans', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.navbar{
+  background-color: black;
 }
 
-.navbar {
-  background-color: #22668A;
+.navbar-brand{
+  color: orange;
 }
 
-.category-aktif {
-  background-color: #22668A;
-  color: white;
-}
-
-.btn-primary {
-  background-color: #22668A;
-}
-
-@media only screen and (max-height: 1000px) {
-  .hasil {
-    height: 650px;
-  }
-  
-  .menu {
-    height: 800px;
-  }
+.active-category{
+  background-color: orange;
+  color:white;
 }
 
 .overflow-auto::-webkit-scrollbar{
   display: none;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }

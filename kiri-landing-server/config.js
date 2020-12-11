@@ -10,4 +10,18 @@ const pool = new Pool({
   ssl: isProduction,
 })
 
-module.exports = {pool}
+const {Client} = require('pg')
+const client = new Client({
+  user:"faridzam",
+  password: "zamzam870",
+  host: "localhost",
+  port: 5432,
+  database: "orders"
+})
+
+client.connect()
+.then(() => console.log("connection successfuly"))
+.catch(e => console.log)
+.finally(() => client.end())
+
+module.exports = {pool, client}

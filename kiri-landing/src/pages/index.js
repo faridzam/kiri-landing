@@ -1,4 +1,4 @@
 import Home from './Home'
-import Sukses from './Sukses'
+import Success from './Success'
 
-export { Home, Sukses }
+export { Home, Success }
