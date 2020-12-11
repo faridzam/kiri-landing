@@ -70,7 +70,7 @@ const CartModal = ({
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={() => deleteOrder(cartDetail.cart_id)}>
+          <Button variant="danger" onClick={() => deleteOrder(cartDetail.product_id)}>
             <FontAwesomeIcon icon={faTrash} /> Hapus Pesanan
           </Button>
         </Modal.Footer>

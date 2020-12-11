@@ -10,10 +10,10 @@ export default class TotalPayment extends Component {
   sumbitTotalPayment = (totalPayment) => {
       const order = {
           Bill_Charge: totalPayment,
-          menus: this.props.carts
+          products: this.props.carts
       }
 
-      axios.post(API_URL+"pesanans", order).then((res) => {
+      axios.post(API_URL+"carts", order).then((res) => {
           this.props.history.push('/sukses')
       })
   };

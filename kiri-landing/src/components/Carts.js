@@ -39,18 +39,18 @@ class Carts extends React.Component{
 
     increaseAmount = () => {
         this.setState({
-          quantity: this.state.cart_quantity + 1,
+          quantity: this.state.quantity + 1,
           totalCharge:
-            this.state.cartDetail.product_price * (this.state.cart_quantity + 1),
+            this.state.cartDetail.product_price * (this.state.quantity + 1),
         });
       };
     
       decreaseAmount = () => {
         if (this.state.quantity !== 1) {
           this.setState({
-            quantity: this.state.cart_quantity - 1,
+            quantity: this.state.quantity - 1,
             totalCharge:
-              this.state.cartDetail.product_price * (this.state.cart_quantity - 1),
+              this.state.cartDetail.product_price * (this.state.quantity - 1),
           });
         }
       };
@@ -69,7 +69,7 @@ class Carts extends React.Component{
         const data = {
           cart_quantity: this.state.quantity,
           cart_price: this.state.totalCharge,
-          product: this.state.cartDetail,
+          product_name: this.state.cartDetail.product_name,
           cart_note: this.state.note,
         };
     

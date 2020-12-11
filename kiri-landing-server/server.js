@@ -35,8 +35,10 @@ const getProducts = (request, response) => {
 
 //carts
 const getCarts = (request, response) => {
+  console.log(request.query);
+  const product_id = request.query.product_id;
 
-  pool.query('SELECT * FROM carts', (error, results) => {
+  pool.query('SELECT * FROM carts WHERE product_id = $1', [product_id], (error, results) => {
     if (error) {
       throw error
     }
@@ -44,18 +46,18 @@ const getCarts = (request, response) => {
   })
 }
 
-const getCartsById = (request, response) => {
-  let product_id = request.query.product_id;
+// const getCartsById = (request, response) => {
+//   let product_id = request.params.product_id;
 
-  pool.query('SELECT * FROM carts WHERE product_id = $1',
-  [product_id],
-  (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
-}
+//   pool.query('SELECT * FROM carts WHERE product_id = $1',
+//   [product_id],
+//   (error, results) => {
+//     if (error) {
+//       throw error
+//     }
+//     response.status(200).json(results.rows)
+//   })
+// }
 
 const addCarts = (request, response) => {
   const {cart_quantity, product_id, cart_price, product_name, product_price} = request.body
@@ -74,7 +76,7 @@ const addCarts = (request, response) => {
 
 const deleteCarts = (request, response) => {
   
-  const {product_id} = request.params.product_id
+  const {product_id} = request.params;
 
   pool.query(
     'delete from carts where product_id = ($1)',
@@ -120,18 +122,30 @@ app.get("/products/:category_name", async (req,res) => {
   //POST endpoint
   .post(addCarts)
 
-app.get('/carts', getCartsById)
+app.get('/carts/all', (req, res) =>{
+  pool.query(
+    'SELECT * FROM carts',
+    (error, results) =>{
+      if(error){
+        throw error
+      }
+      res.status(200).json(results.rows)
+    }
+  )
+})
+
+// app.get('/carts', getCartsById)
 
 app.delete('/carts/:product_id', deleteCarts)
-app.get ('/carts/:product_id', getCartsById)
+// app.get ('/carts/:product_id', getCartsById)
   
 app.put('/carts/:product_id', (request, response) =>{
-  const {product_id} = request.params.product_id
-  const {cart_quantity, cart_price} = request.body
+  const {product_id} = request.params
+  const {cart_quantity, cart_price, cart_note} = request.body
 
   pool.query(
-    'UPDATE carts SET cart_quantity = $1, cart_price = $2 WHERE product_id = $3',
-    [cart_quantity, cart_price, product_id],
+    'UPDATE carts SET cart_quantity = $1, cart_price = $2, cart_note = $3 WHERE product_id = $4',
+    [cart_quantity, cart_price, cart_note, product_id],
     (error) => {
       if (error) {
         throw error

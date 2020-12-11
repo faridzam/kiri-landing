@@ -27,7 +27,7 @@ class Home extends React.Component{
       });
 
       axios
-      .get(API_URL + "carts")
+      .get(API_URL + "carts/all")
       .then((res) => {
         const carts = res.data;
         this.setState({ carts });
@@ -40,7 +40,7 @@ class Home extends React.Component{
   componentDidUpdate(prevState) {
     if(this.state.carts !== prevState.carts) {
       axios
-      .get(API_URL + "carts")
+      .get(API_URL + "carts/all")
       .then((res) => {
         const carts = res.data;
         this.setState({ carts });
@@ -108,7 +108,7 @@ class Home extends React.Component{
           };
 
           axios
-            .put(API_URL + "carts/" + res.data[0].cart_id, cart)
+            .put(API_URL + "carts/" + res.data[0].product_id, cart)
             .then((res) => {
               swal({
                 title: "Sukses Masuk Keranjang",
