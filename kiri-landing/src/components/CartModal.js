@@ -65,13 +65,13 @@ const CartModal = ({
               />
             </Form.Group>
             <Button variant="primary" type="submit">
-                Simpan
+                Save
             </Button>   
           </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="danger" onClick={() => deleteOrder(cartDetail.product_id)}>
-            <FontAwesomeIcon icon={faTrash} /> Hapus Pesanan
+            <FontAwesomeIcon icon={faTrash} /> Delete Item
           </Button>
         </Modal.Footer>
       </Modal>
@@ -80,9 +80,9 @@ const CartModal = ({
     return (
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Kosong</Modal.Title>
+          <Modal.Title>Empty</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Kosong</Modal.Body>
+        <Modal.Body>Empty</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close

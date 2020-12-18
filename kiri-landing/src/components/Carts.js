@@ -77,8 +77,8 @@ class Carts extends React.Component{
           .put(API_URL + "carts/" + this.state.cartDetail.product_id, data)
           .then((res) => {
             swal({
-              title: "Update Pesanan!",
-              text: "Sukses Update Pesanan " + data.product_name,
+              title: "Update Cart!",
+              text: "Renew Your" + data.product_name,
               icon: "success",
               button: false,
               timer: 1500,
@@ -96,9 +96,9 @@ class Carts extends React.Component{
           .delete(API_URL + "carts/" + product_id)
           .then((res) => {
             swal({
-              title: "Hapus Pesanan!",
+              title: "Delete Order!",
               text:
-                "Sukses Hapus Pesanan " + this.state.cartDetail.product_name,
+                "Deleting Your" + this.state.cartDetail.product_name,
               icon: "error",
               button: false,
               timer: 1500,
