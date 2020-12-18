@@ -8,13 +8,15 @@ import { API_URL } from '../utils/constants'
 
 export default class TotalPayment extends Component {
   sumbitTotalPayment = (totalPayment) => {
-      const order = {
-          Bill_Charge: totalPayment,
-          products: this.props.carts
+      const bill = {
+          bill_price: totalPayment,
+          bill_menu: this.props.carts.filter((ids) => {
+            return(ids);
+          })
       }
 
-      axios.post(API_URL+"carts", order).then((res) => {
-          this.props.history.push('/sukses')
+      axios.post(API_URL + "bills", bill).then((res) => {
+          this.props.history.push('/success')
       })
   };
 

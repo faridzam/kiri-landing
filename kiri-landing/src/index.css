@@ -14,3 +14,13 @@
 .overflow-auto::-webkit-scrollbar{
   display: none;
 }
+
+@media only screen and (max-height: 1000px) {
+  .cartMenu {
+    height: 650px;
+  }
+  
+  .product {
+    height: 800px;
+  }
+}

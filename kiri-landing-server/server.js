@@ -46,19 +46,6 @@ const getCarts = (request, response) => {
   })
 }
 
-// const getCartsById = (request, response) => {
-//   let product_id = request.params.product_id;
-
-//   pool.query('SELECT * FROM carts WHERE product_id = $1',
-//   [product_id],
-//   (error, results) => {
-//     if (error) {
-//       throw error
-//     }
-//     response.status(200).json(results.rows)
-//   })
-// }
-
 const addCarts = (request, response) => {
   const {cart_quantity, product_id, cart_price, product_name, product_price} = request.body
 
@@ -76,19 +63,50 @@ const addCarts = (request, response) => {
 
 const deleteCarts = (request, response) => {
   
-  const {product_id} = request.params;
+  const {product_id} = request.params
 
   pool.query(
-    'delete from carts where product_id = ($1)',
+    'DELETE FROM carts WHERE product_id = $1',
     [product_id],
     (error) => {
       if (error) {
         throw error
       }
       response.status(201).json({status: 'success', message: 'cart removed.'})
+    }
+  )
+}
+
+const deleteAllCarts = (req, res) => {
+  pool.query(
+    'DELETE FROM carts',
+    (error) => {
+      if (error){
+        throw error
+      }
+      response.status(201).json({status: 'success', message: 'remove all carts.'})
+    }
+  )
+}
+
+const addBills = (request, response) => {
+  const {bill_price, bill_menu} = request.body
+
+  pool.query(
+    'INSERT INTO bills (bill_price, bill_menu) VALUES ($1, $2)',
+    [bill_price, {bill_menu}],
+    (error) => {
+      if (error) {
+        throw error;
+      }
+      response.status(201).json({status: 'success', message: 'bill added.'})
     },
   )
 }
+
+
+
+
 
 app.get("/", (req,res) =>{
   res.send("welcome to kiri_backend")
@@ -122,6 +140,7 @@ app.get("/products/:category_name", async (req,res) => {
   //POST endpoint
   .post(addCarts)
 
+//get all carts
 app.get('/carts/all', (req, res) =>{
   pool.query(
     'SELECT * FROM carts',
@@ -134,11 +153,11 @@ app.get('/carts/all', (req, res) =>{
   )
 })
 
-// app.get('/carts', getCartsById)
-
+//delete cart by id
 app.delete('/carts/:product_id', deleteCarts)
-// app.get ('/carts/:product_id', getCartsById)
-  
+app.delete('/carts', deleteAllCarts)
+
+//update cart by id
 app.put('/carts/:product_id', (request, response) =>{
   const {product_id} = request.params
   const {cart_quantity, cart_price, cart_note} = request.body
@@ -154,6 +173,9 @@ app.put('/carts/:product_id', (request, response) =>{
     },
   )
 })
+
+//post bills
+app.post('/bills', addBills)
 
 // Start server
 app.listen(process.env.PORT || 8080, () => {
