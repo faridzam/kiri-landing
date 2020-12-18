@@ -8,6 +8,9 @@ const Products = ({ product, addToCart }) => {
       <Card className="shadow" onClick={() => addToCart(product)}>
         <Card.Img
           variant="top"
+          src={
+            "assets/menu/default.png"
+          }
         />
         <Card.Body>
           <Card.Title>{product.product_name} <strong>({product.product_code})</strong></Card.Title>

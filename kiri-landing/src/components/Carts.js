@@ -78,7 +78,7 @@ class Carts extends React.Component{
           .then((res) => {
             swal({
               title: "Update Cart!",
-              text: "Renew Your" + data.product_name,
+              text: "Renew Your " + data.product_name,
               icon: "success",
               button: false,
               timer: 1500,
@@ -98,7 +98,7 @@ class Carts extends React.Component{
             swal({
               title: "Delete Order!",
               text:
-                "Deleting Your" + this.state.cartDetail.product_name,
+                "Deleting Your " + this.state.cartDetail.product_name,
               icon: "error",
               button: false,
               timer: 1500,

@@ -32,7 +32,7 @@ export default class TotalPayment extends Component {
         <Row>
           <Col md={{ span: 3, offset: 9 }} className="px-4">
             <h4>
-              Total Harga :{" "}
+              Total Price :{" "}
               <strong className="float-right mr-2">
                 Rp. {numberWithCommas(totalPayment)}
               </strong>
@@ -44,7 +44,7 @@ export default class TotalPayment extends Component {
               size="lg"
               onClick={() => this.sumbitTotalPayment(totalPayment)}
             >
-              <FontAwesomeIcon icon={faShoppingCart} /> <strong>BAYAR</strong>
+              <FontAwesomeIcon icon={faShoppingCart} /> <strong>ORDER!</strong>
             </Button>
           </Col>
         </Row>

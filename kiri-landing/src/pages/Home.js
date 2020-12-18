@@ -86,8 +86,8 @@ class Home extends React.Component{
             .post(API_URL + "carts", cart)
             .then((res) => {
               swal({
-                title: "Sukses Masuk Keranjang",
-                text: "Sukses Masuk Keranjang " + cart.product_name,
+                title: "Add To Cart",
+                text: cart.product_name + " Enter Your Cart",
                 icon: "success",
                 button: false,
                 timer: 1500,
@@ -111,8 +111,8 @@ class Home extends React.Component{
             .put(API_URL + "carts/" + res.data[0].product_id, cart)
             .then((res) => {
               swal({
-                title: "Sukses Masuk Keranjang",
-                text: "Sukses Masuk Keranjang " + cart.product_name,
+                title: "Add To Cart",
+                text: cart.product_name + " Enter Your Cart",
                 icon: "success",
                 button: false,
                 timer: 1500,
