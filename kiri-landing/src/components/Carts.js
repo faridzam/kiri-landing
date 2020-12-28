@@ -67,26 +67,33 @@ class Carts extends React.Component{
         this.handleClose();
     
         const data = {
-          cart_quantity: this.state.quantity,
-          cart_price: this.state.totalCharge,
-          product_name: this.state.cartDetail.product_name,
-          cart_note: this.state.note,
+          cart_quantity : this.state.quantity,
+          cart_price : this.state.totalCharge,
+          product_name : this.state.cartDetail.product_name,
+          product_id : this.state.cartDetail.product_id,
+          product_price : this.state.cartDetail.product_price,
+          cart_note : this.state.note,
         };
-    
-        axios
-          .put(API_URL + "carts/" + this.state.cartDetail.product_id, data)
-          .then((res) => {
-            swal({
-              title: "Update Cart!",
-              text: "Renew Your " + data.product_name,
-              icon: "success",
-              button: false,
-              timer: 1500,
-            });
-          })
-          .catch((error) => {
-            console.log("Error yaa ", error);
-          });
+
+        let cart = [...this.props.carts];
+        let index = cart.findIndex(el => cart.product_id = data.product_id);
+        cart[index] = data;
+        sessionStorage.setItem("cart", JSON.stringify(cart));
+        this.setState({carts : cart})
+        // axios
+        //   .put(API_URL + "carts/" + this.state.cartDetail.product_id, data)
+        //   .then((res) => {
+        //     swal({
+        //       title: "Update Cart!",
+        //       text: "Renew Your " + data.product_name,
+        //       icon: "success",
+        //       button: false,
+        //       timer: 1500,
+        //     });
+        //   })
+        //   .catch((error) => {
+        //     console.log("Error yaa ", error);
+        //   });
       };
     
       deleteOrder = (product_id) => {
@@ -122,7 +129,7 @@ class Carts extends React.Component{
                         <ListGroup variant="flush">
                             {carts.map((cartMenu) =>(
                                 <ListGroup.Item
-                                key={cartMenu.cart_id}
+                                key={cartMenu.product_name}
                                 onClick={() => this.handleShow(cartMenu)}
                         >
                             <Row>
@@ -158,7 +165,6 @@ class Carts extends React.Component{
                         </ListGroup>
                     </Card>
                 )}
-                <TotalPayment carts = {carts}{...this.props}/>
             </Col>
         )
     }

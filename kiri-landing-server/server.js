@@ -11,7 +11,6 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(cors())
 
-//categories
 const getCategories = (request, response) => {
   pool.query('SELECT * FROM categories', (error, results) => {
     if (error) {
@@ -22,7 +21,6 @@ const getCategories = (request, response) => {
 }
 
 
-//products
 const getProducts = (request, response) => {
 
   pool.query('SELECT * FROM products left join categories on products.category_id = categories.category_id', (error, results) => {
@@ -33,7 +31,6 @@ const getProducts = (request, response) => {
   })
 }
 
-//carts
 const getCarts = (request, response) => {
   console.log(request.query);
   const product_id = request.query.product_id;
@@ -94,7 +91,7 @@ const addBills = (request, response) => {
 
   pool.query(
     'INSERT INTO bills (bill_price, bill_menu) VALUES ($1, $2)',
-    [bill_price, {bill_menu}],
+    [bill_price, bill_menu],
     (error) => {
       if (error) {
         throw error;
@@ -114,15 +111,12 @@ app.get("/", (req,res) =>{
 
 app
   .route('/categories')
-  // GET endpoint
   .get(getCategories)
-app
-  .route('/products')
-  //GET endpoint
-  .get(getProducts)
-  //POST endpoint
 
-//changeCategories
+  app
+  .route('/products')
+  .get(getProducts)
+
 app.get("/products/:category_name", async (req,res) => {
   const {category_name} = req.params;
   try{
@@ -135,9 +129,7 @@ app.get("/products/:category_name", async (req,res) => {
 
   app
   .route('/carts')
-  //GET endpoint
   .get(getCarts)
-  //POST endpoint
   .post(addCarts)
 
 //get all carts
@@ -153,11 +145,9 @@ app.get('/carts/all', (req, res) =>{
   )
 })
 
-//delete cart by id
 app.delete('/carts/:product_id', deleteCarts)
 app.delete('/carts', deleteAllCarts)
 
-//update cart by id
 app.put('/carts/:product_id', (request, response) =>{
   const {product_id} = request.params
   const {cart_quantity, cart_price, cart_note} = request.body
@@ -177,7 +167,7 @@ app.put('/carts/:product_id', (request, response) =>{
 //post bills
 app.post('/bills', addBills)
 
-// Start server
-app.listen(process.env.PORT || 8080, () => {
+//Start server
+app.listen(process.env.PORT || 8080, "0.0.0.0", () => {
   console.log(`Server listening`)
 })

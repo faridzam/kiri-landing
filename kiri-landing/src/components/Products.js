@@ -2,7 +2,7 @@ import React from "react";
 import { Col, Card } from "react-bootstrap";
 import { numberWithCommas } from "../utils/utils";
 
-const Products = ({ product, addToCart }) => {
+const Products = ({ product, addToCart}) => {
   return (
     <Col md={4} xs={6} className="mb-4">
       <Card className="shadow" onClick={() => addToCart(product)}>

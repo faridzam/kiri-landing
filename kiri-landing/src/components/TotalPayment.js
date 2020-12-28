@@ -10,8 +10,8 @@ export default class TotalPayment extends Component {
   sumbitTotalPayment = (totalPayment) => {
       const bill = {
           bill_price: totalPayment,
-          bill_menu: this.props.carts.filter((ids) => {
-            return(ids);
+          bill_menu: this.props.carts.map((ids) => {
+            return(ids.cart_id);
           })
       }
 
@@ -67,7 +67,7 @@ export default class TotalPayment extends Component {
               size="lg"
               onClick={() => this.sumbitTotalPayment(totalPayment)}
             >
-              <FontAwesomeIcon icon={faShoppingCart} /> <strong>ORDER!</strong>
+              <FontAwesomeIcon icon={faShoppingCart} /> <strong>CHECKOUT!</strong>
             </Button>
           </Col>
         </Row>

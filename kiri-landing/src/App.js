@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
   BrowserRouter,
   Switch,
@@ -6,7 +6,6 @@ import {
 } from "react-router-dom";
 import {Navigation} from './components'
 import {Home, Success} from './pages'
-
 class App extends React.Component{
   render(){
     return(
