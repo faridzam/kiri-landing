@@ -75,11 +75,15 @@ class Carts extends React.Component{
           cart_note : this.state.note,
         };
 
-        let cart = [...this.props.carts];
-        let index = cart.findIndex(el => cart.product_id = data.product_id);
-        cart[index] = data;
-        sessionStorage.setItem("cart", JSON.stringify(cart));
-        this.setState({carts : cart})
+        let index = this.props.carts.findIndex(
+          obj => obj.product_id === data.product_id
+        );
+        console.log(index);
+
+        if (index !== -1){
+          this.props.carts[index] = data;
+          sessionStorage.setItem('cart', JSON.stringify(this.props.carts));
+        }        
         // axios
         //   .put(API_URL + "carts/" + this.state.cartDetail.product_id, data)
         //   .then((res) => {
@@ -98,22 +102,13 @@ class Carts extends React.Component{
     
       deleteOrder = (product_id) => {
         this.handleClose();
-    
-        axios
-          .delete(API_URL + "carts/" + product_id)
-          .then((res) => {
-            swal({
-              title: "Delete Order!",
-              text:
-                "Deleting Your " + this.state.cartDetail.product_name,
-              icon: "error",
-              button: false,
-              timer: 1500,
-            });
-          })
-          .catch((error) => {
-            console.log("Error yaa ", error);
-          });
+        
+        let cart = this.props.carts;
+        let removeIndex = cart.map(function(item){return item.product_id}).indexOf(product_id);
+        cart.splice(removeIndex, 1);
+
+        this.setState({carts : cart});
+        sessionStorage.setItem('cart', JSON.stringify(this.props.carts));
       };
 
     render(){
@@ -165,6 +160,7 @@ class Carts extends React.Component{
                         </ListGroup>
                     </Card>
                 )}
+                <TotalPayment carts={carts}{...this.props}/>
             </Col>
         )
     }

@@ -4,20 +4,26 @@ import axios from "axios";
 import React, { Component } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import { numberWithCommas } from "../utils/utils";
-import { API_URL } from '../utils/constants'
+import { API_URL } from '../utils/constants';
+import { useHistory } from "react-router-dom";
+
+
 
 export default class TotalPayment extends Component {
   sumbitTotalPayment = (totalPayment) => {
       const bill = {
           bill_price: totalPayment,
-          bill_menu: this.props.carts.map((ids) => {
-            return(ids.cart_id);
-          })
+          bill_menu: JSON.parse(sessionStorage.getItem('cart')),
       }
 
-      axios.post(API_URL + "bills", bill).then((res) => {
-          this.props.history.push('/success')
-      })
+      axios
+      .post(API_URL + "bills", bill)
+      .then((res) => {
+        this.props.history.push({
+          pathname: '/success',
+          state: {carts : []},
+        });
+      });
   };
 
   render() {
@@ -44,7 +50,7 @@ export default class TotalPayment extends Component {
               size="lg"
               onClick={() => this.sumbitTotalPayment(totalPayment)}
             >
-              <FontAwesomeIcon icon={faShoppingCart} /> <strong>ORDER!</strong>
+              <FontAwesomeIcon icon={faShoppingCart} /> <strong>CHECKOUT!</strong>
             </Button>
           </Col>
         </Row>

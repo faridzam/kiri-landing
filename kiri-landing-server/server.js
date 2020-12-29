@@ -86,8 +86,8 @@ const deleteAllCarts = (req, res) => {
   )
 }
 
-const addBills = (request, response) => {
-  const {bill_price, bill_menu} = request.body
+const addBills = (req, res) => {
+  const {bill_price, bill_menu} = req.body
 
   pool.query(
     'INSERT INTO bills (bill_price, bill_menu) VALUES ($1, $2)',
@@ -96,7 +96,7 @@ const addBills = (request, response) => {
       if (error) {
         throw error;
       }
-      response.status(201).json({status: 'success', message: 'bill added.'})
+      res.status(201).json({status: 'success', message: 'bill added.'})
     },
   )
 }
@@ -127,42 +127,42 @@ app.get("/products/:category_name", async (req,res) => {
   }
 });
 
-  app
-  .route('/carts')
-  .get(getCarts)
-  .post(addCarts)
+//   app
+//   .route('/carts')
+//   .get(getCarts)
+//   .post(addCarts)
 
-//get all carts
-app.get('/carts/all', (req, res) =>{
-  pool.query(
-    'SELECT * FROM carts',
-    (error, results) =>{
-      if(error){
-        throw error
-      }
-      res.status(200).json(results.rows)
-    }
-  )
-})
+// //get all carts
+// app.get('/carts/all', (req, res) =>{
+//   pool.query(
+//     'SELECT * FROM carts',
+//     (error, results) =>{
+//       if(error){
+//         throw error
+//       }
+//       res.status(200).json(results.rows)
+//     }
+//   )
+// })
 
-app.delete('/carts/:product_id', deleteCarts)
-app.delete('/carts', deleteAllCarts)
+// app.delete('/carts/:product_id', deleteCarts)
+// app.delete('/carts', deleteAllCarts)
 
-app.put('/carts/:product_id', (request, response) =>{
-  const {product_id} = request.params
-  const {cart_quantity, cart_price, cart_note} = request.body
+// app.put('/carts/:product_id', (request, response) =>{
+//   const {product_id} = request.params
+//   const {cart_quantity, cart_price, cart_note} = request.body
 
-  pool.query(
-    'UPDATE carts SET cart_quantity = $1, cart_price = $2, cart_note = $3 WHERE product_id = $4',
-    [cart_quantity, cart_price, cart_note, product_id],
-    (error) => {
-      if (error) {
-        throw error
-      }
-      response.status(200).send('carts modified with ID: ${cart_id}')
-    },
-  )
-})
+//   pool.query(
+//     'UPDATE carts SET cart_quantity = $1, cart_price = $2, cart_note = $3 WHERE product_id = $4',
+//     [cart_quantity, cart_price, cart_note, product_id],
+//     (error) => {
+//       if (error) {
+//         throw error
+//       }
+//       response.status(200).send('carts modified with ID: ${cart_id}')
+//     },
+//   )
+// })
 
 //post bills
 app.post('/bills', addBills)

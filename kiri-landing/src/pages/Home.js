@@ -33,7 +33,7 @@ class Home extends React.Component{
       if (sessionStorage.getItem("cart") === null){
         sessionStorage.setItem("cart", "[]");
         const carts = JSON.parse(sessionStorage.getItem("cart"));
-        this.setState({carts});
+        this.setState({carts}, () => { sessionStorage.setItem('cart', JSON.stringify(carts)) });
         console.log("cart = null");
       } else {
         const carts = JSON.parse(sessionStorage.getItem("cart"));
@@ -133,6 +133,13 @@ class Home extends React.Component{
     }
         
     this.setState({carts : cartCopy})
+    swal({
+      title: "add to cart",
+      text: value.product_name + "added",
+      icon: "success",
+      button: false,
+      timer: 1500,
+    });
     // this.setState({carts : cartCopy});
     // let stringCarts = JSON.stringify(cartCopy);
     // sessionStorage.setItem("cart", stringCarts);    
